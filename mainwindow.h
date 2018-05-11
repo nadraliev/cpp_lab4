@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include <QMdiArea>
+#include <filesinputsubwindow.h>
+#include <QMdiSubWindow>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 class MainWindow : public QMainWindow
 {

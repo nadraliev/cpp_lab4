@@ -2,6 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMenu>
+#include <QAction>
+#include <QtGui>
+#include <QMdiArea>
+#include <QString>
+#include <QFileDialog>
+#include <iostream>
+#include <utils.h>
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +25,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void showFileSubWindow(const QString &text = nullptr, const QString &title = nullptr);
+    void showOpenFileDialog();
+
+private slots:
+    void createNewDocument();
+    void openFile();
 };
 
 #endif // MAINWINDOW_H

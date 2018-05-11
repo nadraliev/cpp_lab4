@@ -15,7 +15,6 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QWidget>
-#include <filesinputsubwindow.h>
 #include <mainwindow.h>
 
 void constructLayout();
@@ -35,8 +34,4 @@ int main(int argc, char *argv[])
 void constructLayout() {
     MainWindow *mainWindow = new MainWindow();
     mainWindow->show();
-}
-
-void click(bool checked) {
-    printf("shit");
 }

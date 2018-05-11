@@ -15,9 +15,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+    utils.cpp \
     mainwindow.cpp \
-    filesinputsubwindow.cpp \
-    utils.cpp
+    filesubwindow.cpp
 
 RESOURCES += qml.qrc
 
@@ -33,6 +33,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    utils.h \
     mainwindow.h \
-    filesinputsubwindow.h \
-    utils.h
+    filesubwindow.h
+
+FORMS += \
+    mainwindow.ui

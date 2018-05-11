@@ -3,11 +3,20 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QMdiSubWindow>
+#include <QTextEdit>
+#include <QString>
 
-class FileSubWindow : public QSubWindow
+class FileSubWindow : public QMdiSubWindow
 {
+    Q_OBJECT
+
 public:
-    FileSubWindow();
+    FileSubWindow(QWidget *parent, const QString &text = nullptr);
+    ~FileSubWindow();
+
+private:
+    QTextEdit *textEdit;
 };
 
 #endif // FILESUBWINDOW_H

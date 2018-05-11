@@ -13,3 +13,10 @@ void Utils::stringTokenizer(string *line, char delimiter, vector<string> *tokens
         tokens->push_back(temp);
     }
 }
+
+string Utils::readFile(const string &path) {
+    ifstream file(path);
+    stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
+}

@@ -37,7 +37,15 @@
     <addaction name="actionOpen"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuFind">
+    <property name="title">
+     <string>Find</string>
+    </property>
+    <addaction name="actionIn_files"/>
+    <addaction name="actionIn_file"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuFind"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -53,6 +61,16 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actionIn_files">
+   <property name="text">
+    <string>In files</string>
+   </property>
+  </action>
+  <action name="actionIn_file">
+   <property name="text">
+    <string>In file</string>
    </property>
   </action>
  </widget>
@@ -106,9 +124,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionIn_files</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>findInFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createNewDocument()</slot>
   <slot>openFile()</slot>
+  <slot>findInFiles()</slot>
  </slots>
 </ui>

@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QKeySequence>
 #include <filesubwindow.h>
+#include <dialog.h>
 
 using namespace std;
 
@@ -25,12 +26,12 @@ void MainWindow::showFileSubWindow(const QString &text, const QString &title) {
     fileSubWindow->show();
 }
 
-void MainWindow::showOpenFileDialog() {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open file", "/", "Text files (*.txt)");
-    cout << "Selected file: " << fileName.toStdString() << endl;
-    if (fileName.trimmed().length() != 0) {
-        showFileSubWindow(QString::fromStdString(Utils::readFile(fileName.toStdString())), fileName);
-    }
+void MainWindow::findStringInFiles(const QString &text, const QVector<QFile> files) {
+
+}
+
+QVector<QFile> MainWindow::parseFilesPaths(const QString &filesList) {
+
 }
 
 //--------------------------- SLOTS ------------------------
@@ -39,5 +40,17 @@ void MainWindow::createNewDocument() {
 }
 
 void MainWindow::openFile() {
-    showOpenFileDialog();
+    QString fileName = QFileDialog::getOpenFileName(this, "Open file", "/", "Text files (*.txt)");
+    cout << "Selected file: " << fileName.toStdString() << endl;
+    if (fileName.trimmed().length() != 0) {
+        showFileSubWindow(QString::fromStdString(Utils::readFile(fileName.toStdString())), fileName);
+    }
+}
+
+void MainWindow::findInFiles() {
+    QString url = Dialog::getUrl();
+    cout << "Url entered: " << url.toStdString() << endl;
+    if (url.trimmed().length() != 0) {
+        //TODO read contents of selected subwindow, parse files paths, perform search
+    }
 }

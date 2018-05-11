@@ -10,6 +10,8 @@
 #include <QFileDialog>
 #include <iostream>
 #include <utils.h>
+#include <QVector>
+#include <QFile>
 
 namespace Ui {
 class MainWindow;
@@ -26,11 +28,13 @@ public:
 private:
     Ui::MainWindow *ui;
     void showFileSubWindow(const QString &text = nullptr, const QString &title = nullptr);
-    void showOpenFileDialog();
+    void findStringInFiles(const QString &text, const QVector<QFile> files);
+    QVector<QFile> parseFilesPaths(const QString &filesList);
 
 private slots:
     void createNewDocument();
     void openFile();
+    void findInFiles();
 };
 
 #endif // MAINWINDOW_H

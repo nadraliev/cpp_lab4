@@ -17,7 +17,8 @@ SOURCES += \
         main.cpp \
     utils.cpp \
     mainwindow.cpp \
-    filesubwindow.cpp
+    filesubwindow.cpp \
+    dialog.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,7 +36,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     utils.h \
     mainwindow.h \
-    filesubwindow.h
+    filesubwindow.h \
+    dialog.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    dialog.ui

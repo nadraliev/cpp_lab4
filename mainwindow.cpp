@@ -28,7 +28,7 @@ void MainWindow::showFileSubWindow(const QString &text, const QString &title) {
 
 void MainWindow::findStringInFiles(const QString &text, const QVector<QFileInfo*> *files, vector<FileEntries> *result) {
     for (QFileInfo *fileInfo: *files) {
-        FileEntries *temp = new FileEntries();
+        FileEntries *temp = new FileEntries(fileInfo->absoluteFilePath().toStdString());
         findStringInFile(text, *fileInfo, temp);
         result->push_back(*temp);
     }
@@ -122,6 +122,11 @@ void MainWindow::findInFiles() {
         if (filesList->size() == 0) return;
         vector<FileEntries> *entries = new vector<FileEntries>();
         findStringInFiles(url, filesList, entries);
-        int a = 1;
+        string entriesStr = "";
+        for (FileEntries fileEntries: *entries) {
+            entriesStr += fileEntries.toString() + "\n";
+        }
+        showFileSubWindow(QString::fromStdString(entriesStr),
+                          QString::fromStdString(Utils::format("%s_search_results", url.toStdString().c_str())));
     }
 }

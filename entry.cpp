@@ -13,3 +13,7 @@ int Entry::getIndexInLine() {
 int Entry::getLine() {
     return line;
 }
+
+string Entry::toString() {
+    return Utils::format("Line %d, indexInLine %d", line, indexInLine);
+}

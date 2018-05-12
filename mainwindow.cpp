@@ -35,12 +35,16 @@ void MainWindow::findStringInFiles(const QString &text, const QVector<QFileInfo*
 }
 
 void MainWindow::findStringInFile(const QString &text, QFileInfo &fileInfo, FileEntries *entries) {
-    string fileText = Utils::readFile(fileInfo.absoluteFilePath().toStdString());
-    istringstream stream(fileText);
+    QString fileText = QString::fromStdString(Utils::readFile(fileInfo.absoluteFilePath().toStdString()));
+    findStringInText(text, fileText, entries);
+}
+
+void MainWindow::findStringInText(const QString &str, QString &text, FileEntries *entries) {
+    istringstream stream(text.toStdString());
     int lineIndex = 0;
     string line;
     while (getline(stream, line)) {
-        findStringInLine(text, line, entries, lineIndex);
+        findStringInLine(str, line, entries, lineIndex);
         lineIndex++;
     }
 }
@@ -126,6 +130,24 @@ void MainWindow::findInFiles() {
         for (FileEntries fileEntries: *entries) {
             entriesStr += fileEntries.toString() + "\n";
         }
+        showFileSubWindow(QString::fromStdString(entriesStr),
+                          QString::fromStdString(Utils::format("%s_search_results", url.toStdString().c_str())));
+    }
+}
+
+void MainWindow::findInFile() {
+    QString url = Dialog::getUrl();
+    cout << "Url entered: " << url.toStdString() << endl;
+    if (url.trimmed().length() != 0) {
+        FileSubWindow *activeWindow = dynamic_cast<FileSubWindow*>(ui->mdiArea->activeSubWindow());
+        if (activeWindow == nullptr) {
+            showErrorDialog("No file selected");
+            return;
+        }
+        QString text = activeWindow->getText();
+        FileEntries *entries = new FileEntries("");
+        findStringInText(url, text, entries);
+        string entriesStr = entries->toString() + "\n";
         showFileSubWindow(QString::fromStdString(entriesStr),
                           QString::fromStdString(Utils::format("%s_search_results", url.toStdString().c_str())));
     }

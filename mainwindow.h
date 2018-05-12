@@ -39,6 +39,7 @@ private:
     void showFileSubWindow(const QString &text = nullptr, const QString &title = nullptr);
     void findStringInFiles(const QString &text, const QVector<QFileInfo*> *files, vector<FileEntries> *result);
     void findStringInFile(const QString &text, QFileInfo &fileInfo, FileEntries *entries);
+    void findStringInText(const QString &str, QString &text, FileEntries *entries);
     void findStringInLine(const QString &text, string &line, FileEntries *entries, int lineIndex);
     void parseFilesPaths(const QString &filesListStr, QVector<QFileInfo*> *filesList);
     bool validateFilesPathsStr(const QString &filesList);
@@ -48,6 +49,7 @@ private slots:
     void createNewDocument();
     void openFile();
     void findInFiles();
+    void findInFile();
 };
 
 #endif // MAINWINDOW_H

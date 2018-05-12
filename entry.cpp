@@ -15,5 +15,5 @@ int Entry::getLine() {
 }
 
 string Entry::toString() {
-    return Utils::format("Line %d, indexInLine %d", line, indexInLine);
+    return Utils::format("Line %d, indexInLine %d", line + 1, indexInLine + 1);
 }

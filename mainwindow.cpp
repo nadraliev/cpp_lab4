@@ -152,3 +152,42 @@ void MainWindow::findInFile() {
                           QString::fromStdString(Utils::format("%s_search_results", url.toStdString().c_str())));
     }
 }
+
+void MainWindow::save() {
+    FileSubWindow *activeWindow = dynamic_cast<FileSubWindow*>(ui->mdiArea->activeSubWindow());
+    if (activeWindow == nullptr) {
+        showErrorDialog("No file selected");
+        return;
+    }
+    QFileInfo fileInfo(activeWindow->windowTitle());
+    if (!(fileInfo.exists() && fileInfo.isFile())) {
+        saveAs();
+    } else {
+        QString text = activeWindow->getText();
+        QFile file(fileInfo.absoluteFilePath());
+        if (file.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text)) {
+            QTextStream textStram(&file);
+            textStram << text;
+        }
+    }
+}
+
+void MainWindow::saveAs() {
+    FileSubWindow *activeWindow = dynamic_cast<FileSubWindow*>(ui->mdiArea->activeSubWindow());
+    if (activeWindow == nullptr) {
+        showErrorDialog("No file selected");
+        return;
+    }
+    QString text = activeWindow->getText();
+    QString path = QFileDialog::getSaveFileName(this, "Save as", "/", "All Files (*)");
+    if (path.trimmed().size() == 0) return;
+    QFileInfo fileInfo(path);
+    if (!(fileInfo.exists() && fileInfo.isFile())) {
+        QFile file(fileInfo.absoluteFilePath());
+        if (file.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text)) {
+            QTextStream textStram(&file);
+            textStram << text;
+        }
+    }
+    activeWindow->setWindowTitle(path);
+}

@@ -50,6 +50,8 @@ private slots:
     void openFile();
     void findInFiles();
     void findInFile();
+    void save();
+    void saveAs();
 };
 
 #endif // MAINWINDOW_H

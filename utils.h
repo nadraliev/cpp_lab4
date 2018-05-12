@@ -14,6 +14,7 @@ public:
     Utils();
     static void stringTokenizer(string* line, char delimiter, vector<string> *tokens);
     static string readFile(const string &path);
+    static void replaceAll(string &str, const string &from, const string &to);
 };
 
 #endif // UTILS_H

@@ -12,6 +12,15 @@
 #include <utils.h>
 #include <QVector>
 #include <QFile>
+#include <QMdiSubWindow>
+#include <QErrorMessage>
+#include <vector>
+#include <regex>
+#include <string>
+#include <QFileInfo>
+#include <fileentries.h>
+#include <entry.h>
+#include <sstream>
 
 namespace Ui {
 class MainWindow;
@@ -28,8 +37,12 @@ public:
 private:
     Ui::MainWindow *ui;
     void showFileSubWindow(const QString &text = nullptr, const QString &title = nullptr);
-    void findStringInFiles(const QString &text, const QVector<QFile> files);
-    QVector<QFile> parseFilesPaths(const QString &filesList);
+    void findStringInFiles(const QString &text, const QVector<QFileInfo*> *files, vector<FileEntries> *result);
+    void findStringInFile(const QString &text, QFileInfo &fileInfo, FileEntries *entries);
+    void findStringInLine(const QString &text, string &line, FileEntries *entries, int lineIndex);
+    void parseFilesPaths(const QString &filesListStr, QVector<QFileInfo*> *filesList);
+    bool validateFilesPathsStr(const QString &filesList);
+    void showErrorDialog(const QString &text);
 
 private slots:
     void createNewDocument();

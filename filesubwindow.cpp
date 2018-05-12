@@ -9,3 +9,7 @@ FileSubWindow::FileSubWindow(QWidget *parent, const QString &text): QMdiSubWindo
 FileSubWindow::~FileSubWindow() {
      textEdit->~QTextEdit();
 }
+
+QString FileSubWindow::getText() {
+    return textEdit->toPlainText();
+}

@@ -18,7 +18,9 @@ SOURCES += \
     utils.cpp \
     mainwindow.cpp \
     filesubwindow.cpp \
-    dialog.cpp
+    dialog.cpp \
+    fileentries.cpp \
+    entry.cpp
 
 RESOURCES += qml.qrc
 
@@ -37,7 +39,9 @@ HEADERS += \
     utils.h \
     mainwindow.h \
     filesubwindow.h \
-    dialog.h
+    dialog.h \
+    fileentries.h \
+    entry.h
 
 FORMS += \
     mainwindow.ui \

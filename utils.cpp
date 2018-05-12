@@ -20,3 +20,15 @@ string Utils::readFile(const string &path) {
     buffer << file.rdbuf();
     return buffer.str();
 }
+
+void Utils::replaceAll(string &str, const string &from, const string &to) {
+    size_t index = 0;
+    while (true) {
+        index = str.find(from, index);
+        if (index == string::npos) break;
+
+        str.replace(index, from.size(), to);
+
+        index += to.size();
+    }
+}

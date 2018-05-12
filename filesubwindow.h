@@ -14,6 +14,7 @@ class FileSubWindow : public QMdiSubWindow
 public:
     FileSubWindow(QWidget *parent, const QString &text = nullptr);
     ~FileSubWindow();
+    QString getText();
 
 private:
     QTextEdit *textEdit;

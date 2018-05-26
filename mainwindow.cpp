@@ -34,6 +34,50 @@ void MainWindow::findStringInFiles(const QString &text, const QVector<QFileInfo*
     }
 }
 
+void MainWindow::findUrlsInFiles(const QVector<QFileInfo *> *files, map<string, vector<FileEntries>> *result) {
+    for (QFileInfo *fileInfo : *files) {
+        QString fileText = QString::fromStdString(Utils::readFile(fileInfo->absoluteFilePath().toStdString()));
+
+        FileEntries *fileEntries = new FileEntries(fileInfo->absoluteFilePath().toStdString());
+        istringstream stream(fileText.toStdString());
+        int lineIndex = 0;
+        string line;
+        while (getline(stream, line)) {
+            findUrlsInLine(line, fileEntries, lineIndex);
+            lineIndex++;
+        }
+
+        for (Entry entry: *(fileEntries->getEntries())) {
+            if (result->find(entry.getText()) == result->end()) {
+                vector<FileEntries> entries;
+                entries.push_back(*fileEntries);
+                (*result)[entry.getText()] = entries;
+            } else {
+                ((*result)[entry.getText()]).push_back(*fileEntries);
+            }
+        }
+    }
+}
+
+void MainWindow::findUrlsInLine(const string &line, FileEntries *fileEntries, int lineIndex) {
+    int index = 0;
+    int spaceIndex = 0;
+    while (true) {
+        index = line.find("ftp://", index);
+        if (index == string::npos) break;
+
+        spaceIndex = line.find(" ", index + 6);
+        if (spaceIndex == string::npos) {
+            spaceIndex = line.size() - 1;
+        }
+        string text = line.substr(index, spaceIndex - index + 1);
+
+        fileEntries->addEntry(lineIndex, index, text);
+
+        index += 6;
+    }
+}
+
 void MainWindow::findStringInFile(const QString &text, QFileInfo &fileInfo, FileEntries *entries) {
     QString fileText = QString::fromStdString(Utils::readFile(fileInfo.absoluteFilePath().toStdString()));
     findStringInText(text, fileText, entries);
@@ -51,11 +95,18 @@ void MainWindow::findStringInText(const QString &str, QString &text, FileEntries
 
 void MainWindow::findStringInLine(const QString &text, string &line, FileEntries *entries, int lineIndex) {
     int index = 0;
+    int spaceIndex = 0;
     while (true) {
         index = line.find(text.toStdString(), index);
         if (index == string::npos) break;
 
-        entries->addEntry(lineIndex, index);
+        spaceIndex = line.find(" ", index + text.size());
+        if (spaceIndex == string::npos) {
+            spaceIndex = line.size() - 1;
+        }
+        string text = line.substr(index, spaceIndex - index + 1);
+
+        entries->addEntry(lineIndex, index, text);
 
         index += text.size();
     }
@@ -190,4 +241,19 @@ void MainWindow::saveAs() {
         }
     }
     activeWindow->setWindowTitle(path);
+}
+
+void MainWindow::findAllUrls() {
+        FileSubWindow *activeWindow = dynamic_cast<FileSubWindow*>(ui->mdiArea->activeSubWindow());
+        if (activeWindow == nullptr) {
+            showErrorDialog("No file selected");
+            return;
+        }
+        QString filesListStr = activeWindow->getText();
+        QVector<QFileInfo*> *filesList = new QVector<QFileInfo*>();
+        parseFilesPaths(filesListStr, filesList);
+        if (filesList->size() == 0) return;
+        map<string, vector<FileEntries>> *entries = new map<string, vector<FileEntries>>();
+        findUrlsInFiles(filesList, entries);
+int a = 5;
 }

@@ -14,8 +14,8 @@ vector<Entry> *FileEntries::getEntries() {
     return entries;
 }
 
-void FileEntries::addEntry(int line, int indexInLine) {
-    entries->push_back(Entry(line, indexInLine));
+void FileEntries::addEntry(int line, int indexInLine, string &text) {
+    entries->push_back(Entry(line, indexInLine, text));
 }
 
 string FileEntries::toString() {

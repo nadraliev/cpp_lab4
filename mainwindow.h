@@ -21,6 +21,8 @@
 #include <fileentries.h>
 #include <entry.h>
 #include <sstream>
+#include <urlentries.h>
+#include <map>
 
 namespace Ui {
 class MainWindow;
@@ -44,6 +46,8 @@ private:
     void parseFilesPaths(const QString &filesListStr, QVector<QFileInfo*> *filesList);
     bool validateFilesPathsStr(const QString &filesList);
     void showErrorDialog(const QString &text);
+    void findUrlsInFiles(const QVector<QFileInfo*> *files, map<string, vector<FileEntries>> *result);
+    void findUrlsInLine(const string& line, FileEntries *fileEntries, int lineIndex);
 
 private slots:
     void createNewDocument();
@@ -52,6 +56,7 @@ private slots:
     void findInFile();
     void save();
     void saveAs();
+    void findAllUrls();
 };
 
 #endif // MAINWINDOW_H

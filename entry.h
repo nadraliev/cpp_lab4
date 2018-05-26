@@ -9,14 +9,16 @@ using namespace std;
 class Entry
 {
 public:
-    Entry(int line, int indexInLine);
+    Entry(int line, int indexInLine, string text);
     int getLine();
     int getIndexInLine();
+    string getText();
     string toString();
 
 private:
     int line;
     int indexInLine;
+    string text;
 };
 
 #endif // ENTRY_H

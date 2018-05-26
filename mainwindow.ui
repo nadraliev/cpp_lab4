@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>755</width>
-     <height>23</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -45,6 +45,7 @@
     </property>
     <addaction name="actionIn_files"/>
     <addaction name="actionIn_file"/>
+    <addaction name="actionAll_urls"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuFind"/>
@@ -77,12 +78,17 @@
   </action>
   <action name="actionSave_as">
    <property name="text">
-    <string>Save as</string>
+    <string>Sa&amp;ve as</string>
    </property>
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Save</string>
+    <string>&amp;Save</string>
+   </property>
+  </action>
+  <action name="actionAll_urls">
+   <property name="text">
+    <string>All urls</string>
    </property>
   </action>
  </widget>
@@ -200,6 +206,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAll_urls</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>findAllUrls()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createNewDocument()</slot>
@@ -208,5 +230,6 @@
   <slot>findInFile()</slot>
   <slot>save()</slot>
   <slot>saveAs()</slot>
+  <slot>findAllUrls()</slot>
  </slots>
 </ui>

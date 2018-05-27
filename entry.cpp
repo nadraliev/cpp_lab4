@@ -1,10 +1,11 @@
 #include "entry.h"
 
-Entry::Entry(int line, int indexInLine, string text)
+Entry::Entry(int line, int indexInLine, string text, string path)
 {
     this->line = line;
     this->indexInLine = indexInLine;
     this->text = text;
+    this->path = path;
 }
 
 int Entry::getIndexInLine() {
@@ -13,6 +14,10 @@ int Entry::getIndexInLine() {
 
 int Entry::getLine() {
     return line;
+}
+
+string Entry::getPath() {
+    return path;
 }
 
 string Entry::toString() {

@@ -34,47 +34,65 @@ void MainWindow::findStringInFiles(const QString &text, const QVector<QFileInfo*
     }
 }
 
-void MainWindow::findUrlsInFiles(const QVector<QFileInfo *> *files, map<string, vector<FileEntries>> *result) {
+void MainWindow::findUrlsInFiles(const QVector<QFileInfo *> *files, map<string, vector<FileEntries*>> *result) {
+    vector<Entry> *entries = new vector<Entry>();
     for (QFileInfo *fileInfo : *files) {
         QString fileText = QString::fromStdString(Utils::readFile(fileInfo->absoluteFilePath().toStdString()));
 
-        FileEntries *fileEntries = new FileEntries(fileInfo->absoluteFilePath().toStdString());
         istringstream stream(fileText.toStdString());
         int lineIndex = 0;
         string line;
         while (getline(stream, line)) {
-            findUrlsInLine(line, fileEntries, lineIndex);
+            findUrlsInLine(line, lineIndex, fileInfo->absoluteFilePath().toStdString(), entries);
             lineIndex++;
         }
 
-        for (Entry entry: *(fileEntries->getEntries())) {
-            if (result->find(entry.getText()) == result->end()) {
-                vector<FileEntries> entries;
-                entries.push_back(*fileEntries);
-                (*result)[entry.getText()] = entries;
+
+    }
+
+    for (Entry entry : *entries) {
+        if (result->find(entry.getText()) != result->end()) {
+            vector<FileEntries*> fileEntries = result->at(entry.getText());
+            int fileEntriesIndex = findFileEntriesByPath(entry.getPath(), &fileEntries);
+            if (fileEntriesIndex != -1) {
+                fileEntries[fileEntriesIndex]->addEntry(entry.getLine(), entry.getIndexInLine(), entry.getText());
             } else {
-                ((*result)[entry.getText()]).push_back(*fileEntries);
+                FileEntries *newFileEntries = new FileEntries(entry.getPath());
+                newFileEntries->addEntry(entry.getLine(), entry.getIndexInLine(), entry.getText());
+                fileEntries.push_back(newFileEntries);
             }
+        } else {
+            result->insert(pair<string, vector<FileEntries*>>(entry.getText(), vector<FileEntries*>()));
+            FileEntries *newFileEntries = new FileEntries(entry.getPath());
+            newFileEntries->addEntry(entry.getLine(), entry.getIndexInLine(), entry.getText());
+            result->at(entry.getText()).push_back(newFileEntries);
         }
     }
 }
 
-void MainWindow::findUrlsInLine(const string &line, FileEntries *fileEntries, int lineIndex) {
-    int index = 0;
-    int spaceIndex = 0;
-    while (true) {
-        index = line.find("ftp://", index);
-        if (index == string::npos) break;
+int MainWindow::findFileEntriesByPath(const string &path, vector<FileEntries*> *entries) {
+    return 0;
+}
 
-        spaceIndex = line.find(" ", index + 6);
-        if (spaceIndex == string::npos) {
-            spaceIndex = line.size() - 1;
+void MainWindow::findUrlsInLine(const string &line, int lineIndex, const string &path, vector<Entry> *result) {
+    string protocols[3] = {"ftp://", "http://", "telnet://"};
+    for (string protocol : protocols) {
+        int index = 0;
+        int spaceIndex = 0;
+        while (true) {
+            index = line.find(protocol, index);
+            if (index == string::npos) break;
+
+            spaceIndex = line.find(" ", index + protocol.size());
+            if (spaceIndex == string::npos) {
+                spaceIndex = line.size();
+            }
+            string text = line.substr(index, spaceIndex - index);
+
+            result->push_back(Entry(lineIndex, index, text, path));
+
+            index += 6;
         }
-        string text = line.substr(index, spaceIndex - index + 1);
-
-        fileEntries->addEntry(lineIndex, index, text);
-
-        index += 6;
     }
 }
 
@@ -253,7 +271,14 @@ void MainWindow::findAllUrls() {
         QVector<QFileInfo*> *filesList = new QVector<QFileInfo*>();
         parseFilesPaths(filesListStr, filesList);
         if (filesList->size() == 0) return;
-        map<string, vector<FileEntries>> *entries = new map<string, vector<FileEntries>>();
+        map<string, vector<FileEntries*>> *entries = new map<string, vector<FileEntries*>>();
         findUrlsInFiles(filesList, entries);
-int a = 5;
+        string resultStr = "";
+        for (pair<string, vector<FileEntries*>> url : *entries) {
+            resultStr += url.first + ":\n";
+            for (FileEntries* entries : url.second) {
+                resultStr += entries->toString();
+            }
+        }
+        showFileSubWindow(QString::fromStdString(resultStr), "shit");
 }

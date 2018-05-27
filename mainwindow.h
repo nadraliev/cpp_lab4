@@ -46,8 +46,9 @@ private:
     void parseFilesPaths(const QString &filesListStr, QVector<QFileInfo*> *filesList);
     bool validateFilesPathsStr(const QString &filesList);
     void showErrorDialog(const QString &text);
-    void findUrlsInFiles(const QVector<QFileInfo*> *files, map<string, vector<FileEntries>> *result);
-    void findUrlsInLine(const string& line, FileEntries *fileEntries, int lineIndex);
+    void findUrlsInFiles(const QVector<QFileInfo*> *files, map<string, vector<FileEntries*>> *result);
+    void findUrlsInLine(const string &line, int lineIndex, const string &path, vector<Entry> *result);
+    int findFileEntriesByPath(const string &path, vector<FileEntries*> *entries);
 
 private slots:
     void createNewDocument();

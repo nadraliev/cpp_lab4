@@ -14,8 +14,12 @@ vector<Entry> *FileEntries::getEntries() {
     return entries;
 }
 
-void FileEntries::addEntry(int line, int indexInLine, string &text) {
-    entries->push_back(Entry(line, indexInLine, text));
+void FileEntries::addEntry(int line, int indexInLine, const string &text) {
+    entries->push_back(Entry(line, indexInLine, text, path));
+}
+
+string FileEntries::getPath() {
+    return path;
 }
 
 string FileEntries::toString() {

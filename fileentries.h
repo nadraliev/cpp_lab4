@@ -14,8 +14,9 @@ public:
     FileEntries(string path);
     ~FileEntries();
     vector<Entry> *getEntries();
-    void addEntry(int line, int indexInLine, string &text);
+    void addEntry(int line, int indexInLine, const string &text);
     string toString();
+    string getPath();
 
 private:
     vector<Entry> *entries;
